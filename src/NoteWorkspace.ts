@@ -2,6 +2,10 @@ import * as vscode from 'vscode';
 import { basename, dirname, join, normalize, relative, resolve } from 'path';
 import { existsSync, readFile, writeFileSync } from 'fs';
 
+export const foo = () => {
+  return 1;
+};
+
 // This class contains:
 // 1. an interface to some of the basic user configurable settings or this extension
 // 2. command for creating a New Note
@@ -11,7 +15,7 @@ export class NoteWorkspace {
   // This will allow us to potentially expose these as settings.
   static _rxTagNoAnchors = '\\#[\\w\\-\\_]+'; // used to match tags that appear within lines
   static _rxTagWithAnchors = '^\\#[\\w\\-\\_]+$'; // used to match entire words
-  static _rxWikiLink = '\\[\\[[\\w\\.\\-\\_\\/\\\\]+'; // [[wiki-link-regex
+  static _rxWikiLink = '\\[\\[[^\\]]+\\]\\]'; // [[wiki-link-regex]]
   static _rxMarkdownWordPattern = '([\\_\\w\\#\\.\\/\\\\]+)'; // had to add [".", "/", "\"] to get relative path completion working and ["#"] to get tag completion working
   static _defaultExtension = 'md';
   static _slugifyChar = '-';

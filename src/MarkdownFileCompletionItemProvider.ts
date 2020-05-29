@@ -52,6 +52,7 @@ export class MarkdownFileCompletionItemProvider implements vscode.CompletionItem
         items = files.map((f) => {
           let kind = vscode.CompletionItemKind.File;
           let label = NoteWorkspace.filenameForConvention(f, document);
+          label = label.replace(/-/g, ' '); // FIXME: remove
           let item = new vscode.CompletionItem(label, kind);
           if (contextWord && contextWord.range) {
             item.range = contextWord.range;
