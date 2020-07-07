@@ -5,6 +5,9 @@
 - for Wiki Link [[sub.md]] [[test]]
 - for Tag #tag
 
+[[Link-Topic]]
+[[Link/Topic]]
+
 ---
 
 **Backlinks Panel**

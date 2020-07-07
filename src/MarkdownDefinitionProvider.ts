@@ -34,8 +34,6 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
       return [];
     }
 
-    // TODO: parameterize extensions. return if we don't have a filename and we require extensions
-    // const markdownFileRegex = /[\w\.\-\_\/\\]+\.(md|markdown)/i;
     const selectedWord = ref.word;
     // console.debug('selectedWord', selectedWord);
     let files: Array<vscode.Uri> = [];
@@ -48,9 +46,11 @@ export class MarkdownDefinitionProvider implements vscode.DefinitionProvider {
     // However, only check for basenames in the entire project if:
     if (NoteWorkspace.useUniqueFilenames()) {
       // there should be exactly 1 file with name = selectedWord
-      files = (await NoteWorkspace.noteFiles()).filter((f) => {
-        // files = (await vscode.workspace.findFiles('**/*')).filter((f) => {
-        return NoteWorkspace.noteNamesFuzzyMatch(f.fsPath, ref.word);
+      let notes = await NoteWorkspace.noteFiles();
+      files = notes.filter((f) => {
+        let m = NoteWorkspace.noteNamesFuzzyMatch(f.fsPath, ref.word);
+        // console.debug(`m: ${m}`);
+        return m;
       });
     }
     // If we did not find any files in the workspace,

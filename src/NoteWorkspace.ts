@@ -153,6 +153,8 @@ export class NoteWorkspace {
     n = basename(n);
     // remove the extension:
     n = this.stripExtension(n);
+    // // remove '/' characters
+    // n = n.replace(/\//g, '');
     // slugify (to normalize spaces)
     n = this.slugifyTitle(n);
     return n;
@@ -161,6 +163,11 @@ export class NoteWorkspace {
   // Compare 2 wiki-links for a fuzzy match.
   // All of the following will return true
   static noteNamesFuzzyMatch(left: string, right: string): boolean {
+    console.debug(
+      `left: '${this.normalizeNoteNameForFuzzyMatch(
+        left
+      )}' right: '${this.normalizeNoteNameForFuzzyMatch(right)}'`
+    );
     return this.normalizeNoteNameForFuzzyMatch(left) == this.normalizeNoteNameForFuzzyMatch(right);
   }
 
@@ -242,9 +249,9 @@ export class NoteWorkspace {
   }
 
   static async noteFiles(): Promise<Array<vscode.Uri>> {
+    let that = this;
     let files = (await vscode.workspace.findFiles('**/*')).filter(
-      // TODO: parameterize extensions. Add $ to end?
-      (f) => f.scheme == 'file' && f.path.match(/\.(md|markdown)/i)
+      (f) => f.scheme == 'file' && f.path.match(that.rxFileExtensions())
     );
     return files;
   }
